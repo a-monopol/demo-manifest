@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo
+  labels:
+    app: demo
+    service: demo
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: demo
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: demo
+  labels:
+    account: demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      serviceAccountName: tekton-admin
+      containers:
+      - name: demo
+        image: monopol/demo:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SERVER_SERVLET_CONTEXT_PATH
+          value: "/demo"
+      # securityContext:
+      #   runAsNonRoot: true        
