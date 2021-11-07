@@ -43,5 +43,5 @@ spec:
         env:
         - name: SERVER_SERVLET_CONTEXT_PATH
           value: "/demo"
-      # securityContext:
-      #   runAsNonRoot: true        
+      securityContext:
+        runAsNonRoot: true        
